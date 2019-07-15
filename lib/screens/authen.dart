@@ -1,3 +1,4 @@
+import 'package:art_foodthai/screens/register.dart';
 import 'package:flutter/material.dart';
 
 class Authen extends StatefulWidget {
@@ -27,7 +28,13 @@ class _AuthenState extends State<Authen> {
         'Sign Up',
         style: TextStyle(color: Colors.white),
       ),
-      onPressed: () {},
+      onPressed: () {
+        print('U click sign up');
+
+        var regisRoute =
+            MaterialPageRoute(builder: (BuildContext context) => Register());
+        Navigator.of(context).push(regisRoute);
+      },
     );
   }
 
