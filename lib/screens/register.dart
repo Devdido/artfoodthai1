@@ -7,38 +7,32 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   // explicit
+  final formkey = GlobalKey<FormState>();
+  String name, user, password;
 
   // method
-
-  Widget passText() {
-    return TextFormField(
-      decoration: InputDecoration(
-          icon: Icon(
-            Icons.lock,
-            size: 36.0,
-            color: Colors.lightBlue,
-          ),
-          labelText: 'Password :',
-          labelStyle: TextStyle(color: Colors.lightGreen),
-          helperStyle:
-              TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
-          helperText: 'Type Password'),
-    );
-  }
 
   Widget nameText() {
     return TextFormField(
       decoration: InputDecoration(
-          icon: Icon(
-            Icons.face,
-            size: 36.0,
-            color: Colors.lightBlue,
-          ),
-          labelText: 'Name :',
-          labelStyle: TextStyle(color: Colors.lightGreen),
-          helperStyle:
-              TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
-          helperText: 'Type Display Name'),
+        icon: Icon(
+          Icons.face,
+          size: 36.0,
+          color: Colors.lightBlue,
+        ),
+        labelText: 'Name :',
+        labelStyle: TextStyle(color: Colors.lightGreen),
+        helperStyle: TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
+        helperText: 'Type Display Name',
+      ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Please Fill Name In Blank';
+        }
+      },
+      onSaved: (String value) {
+        name = value;
+      },
     );
   }
 
@@ -55,13 +49,51 @@ class _RegisterState extends State<Register> {
           helperStyle:
               TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
           helperText: 'Type UserName'),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Please Fill Username';
+        }
+      },
+      onSaved: (String value) {
+        user = value;
+      },
+    );
+  }
+
+  Widget passText() {
+    return TextFormField(
+      decoration: InputDecoration(
+          icon: Icon(
+            Icons.lock,
+            size: 36.0,
+            color: Colors.lightBlue,
+          ),
+          labelText: 'Password :',
+          labelStyle: TextStyle(color: Colors.lightGreen),
+          helperStyle:
+              TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
+          helperText: 'Type Password'),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Please Type Password';
+        }
+      },
+      onSaved: (String value) {
+        password = value;
+      },
     );
   }
 
   Widget uploadButton() {
     return IconButton(
       icon: Icon(Icons.cloud_upload),
-      onPressed: () {},
+      onPressed: () {
+        print('Click Upload');
+        if (formkey.currentState.validate()) {
+          formkey.currentState.save();
+          print('name = $name, user = $user,password = $password');
+        }
+      },
     );
   }
 
@@ -78,12 +110,15 @@ class _RegisterState extends State<Register> {
       body: Container(
         alignment: Alignment.topCenter,
         padding: EdgeInsets.only(top: 60.0, left: 30.0, right: 30.0),
-        child: ListView(
-          children: <Widget>[
-            nameText(),
-            userText(),
-            passText(),
-          ],
+        child: Form(
+          key: formkey,
+          child: ListView(
+            children: <Widget>[
+              nameText(),
+              userText(),
+              passText(),
+            ],
+          ),
         ),
       ),
     );
