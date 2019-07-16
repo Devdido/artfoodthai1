@@ -1,4 +1,5 @@
 import 'package:art_foodthai/models/user_model.dart';
+import 'package:art_foodthai/screens/my_service.dart';
 import 'package:art_foodthai/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' show get;
@@ -48,7 +49,11 @@ class _AuthenState extends State<Authen> {
         String truePassword = userModel.Password;
         if (password == truePassword) {
           // Password true
+          var myServiceRoute =
+              MaterialPageRoute(builder: (BuildContext context) => MyService(userModel: userModel,));
 
+          Navigator.of(context).pushAndRemoveUntil(
+              myServiceRoute, (Route<dynamic> route) => false);
         } else {
           // Password false
           myAlertDialog('Password False', 'Please Try Agains');
