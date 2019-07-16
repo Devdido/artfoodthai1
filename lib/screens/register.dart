@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' show get;
+import 'dart:convert';
 
 class Register extends StatefulWidget {
   @override
@@ -92,9 +94,21 @@ class _RegisterState extends State<Register> {
         if (formkey.currentState.validate()) {
           formkey.currentState.save();
           print('name = $name, user = $user,password = $password');
+          registerToserver();
         }
       },
     );
+  }
+
+  Future<void> registerToserver() async {
+    String urlString =
+        'https://www.androidthai.in.th/ooo/addDataArt.php?isAdd=true&Name=$name&User=$user&Password=$password';
+    var response = await get(urlString);
+    var result = json.decode(response.body);
+    print('result = $result');
+    if ((result.toString()) == 'true') {
+     Navigator.of(context).pop(); 
+    }
   }
 
   @override
